@@ -53,7 +53,8 @@ func onlyForV2() gee.HandleFunc {
 		// if a server error occurred
 		// c.Fail(500, "Internal Server Error")
 		// Calculate resolution time
-		log.Printf("[%d] %s in %v for group v2", c.StatusCode, c.Req.RequestURI, time.Since(t))
+		// c.Next()
+		log.Printf("[%d] %s in %v for group v2", c.StatusCode, c.Req.RequestURI, time.Since(t)) // 没有next（）所以是在业务handler之前执行，所有statuscode是0
 	}
 }
 
@@ -69,9 +70,10 @@ func main() {
 	{
 		v2.GET("/hello/:name", func(c *gee.Context) {
 			// expect /hello/geektutu
+			time.Sleep(200)
 			c.String(http.StatusOK, "hello %s, you're at %s\n", c.Param("name"), c.Path)
 		})
 	}
 
-	r.Run(":9999")
+	r.Run(":19999")
 }
